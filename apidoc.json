@@ -1,0 +1,8 @@
+{
+  "name": "rest-temp",
+  "version": "0.0.1",
+  "description": "REST API template",
+  "apidoc": {
+    "title": "My REST API doc"
+  }
+}

@@ -5,7 +5,7 @@ env:
 services:
   - mongodb
 install:
-    - npm install
+    - npm install --harmony
     - ssh-keygen -t rsa -b 2048 -m PEM -f private.key
 script:
     - npm test

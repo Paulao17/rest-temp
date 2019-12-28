@@ -6,6 +6,6 @@ services:
   - mongodb
 install:
     - npm install
-    - ssh-keygen -t rsa -b 2048 -m PEM -f private.key
+    - ssh-keygen -t rsa -b 2048 -m PEM -f private.key -N ""
 script:
     - npm test

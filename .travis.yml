@@ -1,0 +1,11 @@
+dist: trusty
+language: node_js
+env:
+    - MONGODB_URI='mongodb://localhost/test'
+services:
+  - mongodb
+install:
+    - npm install
+    - ssh-keygen -t rsa -b 2048 -m PEM -f private.key
+script:
+    - npm test

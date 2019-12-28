@@ -13,7 +13,6 @@ passport.use('password', new LocalStrategy(
       if (!user) {
         return done(null, false, { message: 'Incorrect username.' });
       }
-        console.log(user.authenticate(password))
       if (!user.authenticate(password)) {
         return done(null, false, { message: 'Incorrect password.' });
       }

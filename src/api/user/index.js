@@ -24,9 +24,7 @@ const router = new Router()
  * @apiExample {curl} Example usage:
  *     curl -d '{"username":"foo", "password":"a safer password"}' localhost:9000/auth
  */
-router.get('/', (req, res, next) => {
-  console.log(req.headers);next()
-},
+router.get('/',
   passport.token(),
   user.sayHi)
 

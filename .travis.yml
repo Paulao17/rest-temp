@@ -1,5 +1,7 @@
 dist: trusty
 language: node_js
+node_js:
+  - node
 env:
     - MONGODB_URI='mongodb://localhost/test'
 services:

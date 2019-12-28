@@ -1,5 +1,5 @@
 let mongoose = require('mongoose')
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcryptjs')
 let Schema = mongoose.Schema
 const env = require('../../../config').env
 

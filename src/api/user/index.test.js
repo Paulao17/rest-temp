@@ -22,36 +22,64 @@ afterAll(() => {
   mongoose.disconnect()
 })
 
-beforeEach(async () => {
-  await User.create(user1)
-})
-
-afterEach(async () => {
-  await User.deleteOne({username: user1.username})
-})
-
-test('GET /user correctly', (done) => {
-  request(app()).get('/')
-    .set('Authorization', 'Bearer ' + token1)
-    .expect('Content-Type', /json/)
-    .expect(200, done)
-})
-
-describe('Invalid tokens', () => {
-  test('GET /user with invalid token', (done) => {
-    request(app()).get('/')
-      .set('Authorization', 'Bearer ' + 'An invalid token')
-      .expect(401, done)
+describe('Test auth', () => {
+  beforeEach(async () => {
+    await User.create(user1)
   })
 
-  test('GET /user with invalid token', (done) => {
-    request(app()).get('/')
-      .set('Authorization', 'Bearer ' + jwt.sign('nottest1'))
-      .expect(401, done)
+  afterEach(async () => {
+    await User.deleteOne({username: user1.username})
   })
 
-  test('GET /user without any token', (done) => {
+  test('GET /user correctly', (done) => {
     request(app()).get('/')
-      .expect(401, done)
+      .set('Authorization', 'Bearer ' + token1)
+      .expect('Content-Type', /json/)
+      .expect(200, done)
+  })
+
+  describe('Invalid tokens', () => {
+    test('GET /user with invalid token', (done) => {
+      request(app()).get('/')
+        .set('Authorization', 'Bearer ' + 'An invalid token')
+        .expect(401, done)
+    })
+
+    test('GET /user with invalid token', (done) => {
+      request(app()).get('/')
+        .set('Authorization', 'Bearer ' + jwt.sign('nottest1'))
+        .expect(401, done)
+    })
+
+    test('GET /user without any token', (done) => {
+      request(app()).get('/')
+        .expect(401, done)
+    })
+  })
+})
+
+describe('POST /user', () => {
+  test('POST /user with no body', (done) => {
+    request(app())
+      .post('/')
+      .expect(400, done)
+  });
+
+  test('POST /user create new user', (done) => {
+    request(app())
+      .post('/')
+      .send(user1)
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect(201, done)
+  })
+
+  test('POST /user but user already exists', (done) => {
+    request(app())
+      .post('/')
+      .send(user1)
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect(409, done)
   })
 })

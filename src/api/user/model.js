@@ -11,8 +11,8 @@ let userSchema = new Schema({
     unique: true,
     trim: true,
     lowercase: true,
-    minlength:2,
-    maxlength:32,
+    minlength: 2,
+    maxlength: 32,
     index: true
   },
   password: {
@@ -20,15 +20,13 @@ let userSchema = new Schema({
     required: true,
     minlength: 6,
     maxlength: 128
-  },
-  /*role: {
-    type: String,
-    enum: roles,
-    default: 'user'
-  },*/
+  }
+},
+{
+  timestamps: true
 });
 
-userSchema.pre('save', function (next) {
+userSchema.pre('save', function(next) {
   if (!this.isModified('password')) return next()
 
   const rounds = env === 'test' ? 1 : 9
@@ -40,23 +38,25 @@ userSchema.pre('save', function (next) {
 })
 
 userSchema.methods = {
-  view (full) {
+  view(full) {
     let view = {}
-    let fields = ['id', 'name', 'picture']
+    let fields = ['username']
 
     if (full) {
-      fields = [...fields, 'email', 'createdAt']
+      fields = [...fields, 'createdAt']
     }
 
-    fields.forEach((field) => { view[field] = this[field] })
+    fields.forEach((field) => {
+      view[field] = this[field]
+    })
 
     return view
   },
 
-  authenticate (password) {
+  authenticate(password) {
     return bcrypt.compareSync(password, this.password) ? this : false
   }
 }
 
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model('User', userSchema)
